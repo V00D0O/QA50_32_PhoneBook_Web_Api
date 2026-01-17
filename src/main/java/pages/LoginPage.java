@@ -1,5 +1,6 @@
 package pages;
 
+import dto.User;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -25,6 +26,11 @@ public class LoginPage extends BasePage{
         inputPassword.sendKeys(password);
 
     }
+    public void typeLoginRegistrationFormWithUser(User user){
+        inputEmail.sendKeys(user.getUsername());
+        inputPassword.sendKeys(user.getPassword());
+    }
+
     public  void clickBtnLoginForm(){
         btnLoginForm.click();
     }
