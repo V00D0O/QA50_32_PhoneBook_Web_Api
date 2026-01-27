@@ -50,4 +50,12 @@ public class RegistrationTests extends AppManager {
         loginPage.clickBtnRegistrationForm();
         System.out.println("Registration failed with code 400");
     }
+    @Test
+    public void registrationNegativeTest_WithFaker(){
+        User user = positiveUser();
+        user.setPassword("");
+        loginPage.typeLoginRegistrationFormWithUser(user);
+        loginPage.clickBtnRegistrationForm();
+    Assert.assertTrue(loginPage.closeAlertReturnText().contains("Wrong email or password format"));
+    }
 }
