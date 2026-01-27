@@ -12,29 +12,42 @@ import pages.LoginPage;
 import java.util.Random;
 import static utils.UserFactory.*;
 
-
 public class RegistrationTests extends AppManager {
-   LoginPage loginPage;
+    LoginPage loginPage;
 
     @BeforeMethod
-    public void goToRegisrationPage(){
+    public void goToRegistrationPage(){
         new HomePage(getDriver()).clickBtnLogin();
         loginPage = new LoginPage(getDriver());
     }
+
     @Test
     public void registrationPositiveTest(){
         int i = new Random().nextInt(1000);
-        User user = new User("muyitr"+i+"@gmail.com", "Passwword123!");
+        User user = new User("muyitr"+i+"@gmail.com"
+                , "Password124!");
         loginPage.typeLoginRegistrationFormWithUser(user);
         loginPage.clickBtnRegistrationForm();
-        Assert.assertTrue(new ContactPage(getDriver()).isTextIncontactPageMessagePresent("No Contacts here!"));
+        Assert.assertTrue(new ContactPage(getDriver())
+                .isTextInContactPageMessagePresent("No Contacts here!"));
     }
+
     @Test
     public void registrationPositiveTest_WithFaker(){
         User user = positiveUser();
         System.out.println(user);
         loginPage.typeLoginRegistrationFormWithUser(user);
         loginPage.clickBtnRegistrationForm();
-        Assert.assertTrue(new ContactPage(getDriver()).isTextIncontactPageMessagePresent("No Contacts here!"));
+        Assert.assertTrue(new ContactPage(getDriver())
+                .isTextInContactPageMessagePresent("No Contacts here!"));
+    }
+    @Test
+    public void registrationNegativeTestNoPass() {
+        int i = new Random().nextInt(1000);
+        User user = new User("muyitr" + i + "@gmail.com"
+                , "");
+        loginPage.typeLoginRegistrationFormWithUser(user);
+        loginPage.clickBtnRegistrationForm();
+        System.out.println("Registration failed with code 400");
     }
 }
