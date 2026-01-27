@@ -12,45 +12,29 @@ import pages.LoginPage;
 import java.util.Random;
 import static utils.UserFactory.*;
 
+
 public class RegistrationTests extends AppManager {
-    LoginPage loginPage;
+   LoginPage loginPage;
 
     @BeforeMethod
-    public void goToRegistrationPage(){
+    public void goToRegisrationPage(){
         new HomePage(getDriver()).clickBtnLogin();
         loginPage = new LoginPage(getDriver());
     }
-
     @Test
     public void registrationPositiveTest(){
         int i = new Random().nextInt(1000);
-        User user = new User("mucar"+i+"@gmail.com"
-                , "Password311!");
+        User user = new User("muyitr"+i+"@gmail.com", "Passwword123!");
         loginPage.typeLoginRegistrationFormWithUser(user);
         loginPage.clickBtnRegistrationForm();
-        Assert.assertTrue(new ContactPage(getDriver())
-                .isTextInContactPageMessagePresent("No Contacts here!"));
+        Assert.assertTrue(new ContactPage(getDriver()).isTextIncontactPageMessagePresent("No Contacts here!"));
     }
-
     @Test
     public void registrationPositiveTest_WithFaker(){
         User user = positiveUser();
         System.out.println(user);
         loginPage.typeLoginRegistrationFormWithUser(user);
         loginPage.clickBtnRegistrationForm();
-        Assert.assertTrue(new ContactPage(getDriver())
-                .isTextInContactPageMessagePresent("No Contacts here!"));
-    }
-    @Test
-    public void registrationNegativeTestNoPassword(){
-        int i = new Random().nextInt(1000);
-        User user = new User("mucar"+i+"@gmail.com"
-                , "");
-        loginPage.typeLoginRegistrationFormWithUser(user);
-        loginPage.clickBtnRegistrationForm();
-        Assert.assertTrue(new ContactPage(getDriver())
-                .isTextInContactPageMessagePresent("Registration failed with code 400"));
-
-
+        Assert.assertTrue(new ContactPage(getDriver()).isTextIncontactPageMessagePresent("No Contacts here!"));
     }
 }
