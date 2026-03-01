@@ -3,14 +3,20 @@ package ui_tests;
 import dto.User;
 import manager.AppManager;
 import org.testng.Assert;
+import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 import pages.ContactPage;
 import pages.HomePage;
 import pages.LoginPage;
 import utils.RetryAnalyser;
+import utils.TestNGListener;
+
 import static utils.PropertiesReader.*;
+@Listeners(TestNGListener.class)
+
 
 public class LoginTests extends AppManager {
+
    @Test(retryAnalyzer = RetryAnalyser.class)
    public void loginPositiveTest(){
        //System.out.println("first test");
@@ -24,6 +30,8 @@ public class LoginTests extends AppManager {
        Assert.assertTrue(new ContactPage(getDriver()).isTextInBtnAddPresent("ADD"),"validate text");
 
    }
+
+
     @Test
     public void loginPositiveTestWithUser(){
         User user = new User(getProperty("base.properties", "login"),
@@ -36,6 +44,7 @@ public class LoginTests extends AppManager {
         Assert.assertTrue(new ContactPage(getDriver()).isTextInBtnSignOutPresent("Sign Out"));
 
     }
+
 
     @Test
     public void loginNegativeTest_WrongEmail(){

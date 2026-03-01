@@ -1,6 +1,5 @@
 package ui_tests;
 
-import data_providers.ContactDataProvider;
 import dto.Contact;
 import manager.AppManager;
 import org.testng.Assert;
@@ -13,7 +12,7 @@ import utils.HeaderMenuItem;
 import static pages.BasePage.clickButtonHeader;
 import static utils.ContactFactory.*;
 
-public class AddNewContactTests1 extends AppManager {
+public class AddNewContactTests extends AppManager {
     SoftAssert softAssert = new SoftAssert();
     HomePage homePage;
     LoginPage loginPage;
@@ -30,7 +29,7 @@ public class AddNewContactTests1 extends AppManager {
         loginPage.clickBtnLoginForm();
         contactPage = new ContactPage(getDriver());
         countOfContacts = contactPage.getCountOfContacts();
-        addPage = clickButtonHeader(HeaderMenuItem.ADD);
+       // addPage = clickButtonHeader(HeaderMenuItem.ADD);
     }
 
     @Test
