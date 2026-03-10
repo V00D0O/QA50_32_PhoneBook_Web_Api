@@ -8,6 +8,8 @@ public enum HeaderMenuItem {
     LOGIN("//a[text()='LOGIN']"),
     SIGN_OUT("//button[text()='Sign Out']");
 
+
+
     private final String locator;
 
     HeaderMenuItem(String locator) {

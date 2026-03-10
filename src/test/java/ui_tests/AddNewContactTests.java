@@ -21,7 +21,7 @@ public class AddNewContactTests extends AppManager {
     AddPage addPage;
     int countOfContacts;
 
-    @BeforeMethod
+    @BeforeMethod(alwaysRun = true)
     public void login() {
         homePage = new HomePage(getDriver());
         loginPage = clickButtonHeader(HeaderMenuItem.LOGIN);
@@ -30,26 +30,29 @@ public class AddNewContactTests extends AppManager {
         loginPage.clickBtnLoginForm();
         contactPage = new ContactPage(getDriver());
         countOfContacts = contactPage.getCountOfContacts();
-       // addPage = clickButtonHeader(HeaderMenuItem.ADD);
+        // addPage = clickButtonHeader(HeaderMenuItem.ADD);
     }
 
-    @Test
-    public void addNewContactPositiveTest() {
-        addPage.typeContactForm(positiveContact());
-        int countOfContactsAfterAdd = contactPage.getCountOfContacts();
-        Assert.assertEquals(countOfContactsAfterAdd, countOfContacts + 1);
-    }
 
-    @Test(dataProvider = "dataProviderFromFile",dataProviderClass = ContactDataProvider.class)
-
-    public void addNewContactPositiveTest_WithDataProvider(Contact contact) {
+    @Test(dataProvider = "dataProviderFromFile", dataProviderClass = ContactDataProvider.class)
+    public void addNewContactPositiveTest(Contact contact){
         addPage.typeContactForm(contact);
         int countOfContactsAfterAdd = contactPage.getCountOfContacts();
-        Assert.assertEquals(countOfContactsAfterAdd, countOfContacts + 1);
+        Assert.assertEquals(countOfContactsAfterAdd, countOfContacts +1);
+
     }
 
+    @Test(groups = {"smoke", "contact"})
+    public void addNewContactPositiveTest_WithDataProvider(){
+        addPage.typeContactForm(positiveContact());
+        int countOfContactsAfterAdd = contactPage.getCountOfContacts();
+        Assert.assertEquals(countOfContactsAfterAdd, countOfContacts +1);
+
+    }
+
+
     @Test
-    public void addNewContactPositiveTest_ClickLastContact() {
+    public void addNewContactPositiveTest_ClickLastContact(){
         Contact contact = positiveContact();
         addPage.typeContactForm(contact);
         // contactPage.clickLastContact();
@@ -64,27 +67,29 @@ public class AddNewContactTests extends AppManager {
         contactPage.clickLastContact();
         String text = contactPage.getTextInContact();
         System.out.println(text);
-        softAssert.assertTrue(text.contains(contact.getName()),
-                "validate Name in DetailCard");
-        softAssert.assertTrue(text.contains(contact.getEmail()),
-                "validate Email in DetailCard");
-        softAssert.assertTrue(text.contains(contact.getPhone()),
-                "validate Phone in DetailCard");
+        softAssert.assertTrue(text.contains(contact.getName()), "validate Name in DetailCard");
+        softAssert.assertTrue(text.contains(contact.getEmail()), "validate Email in DetailCard");
+        softAssert.assertTrue(text.contains(contact.getPhone()), "validate Phone in DetailCard");
         softAssert.assertAll();
     }
 
-    @Test(dataProvider = "dataProviderFromFile_WrongPhone",
-            dataProviderClass = ContactDataProvider.class)
-    public void addNewContactNegativeTest_WrongPhoneWithDP(Contact contact) {
+    @Test(dataProvider = "dataProviderFromFile_WrongPhone", dataProviderClass = ContactDataProvider.class)
+    public void addNewContactNegativeTest_WrongPhoneWithDP(Contact contact){
         addPage.typeContactForm(contact);
-        Assert.assertTrue(addPage.closeAlertReturnText()
-                .contains("Phone not valid:"));
+        Assert.assertTrue(addPage.closeAlertReturnText().contains("Phone not valid: "));
     }
 
-    @Test(dataProvider = "dataProviderFromFile_Wrong_EmptyField",
-            dataProviderClass = ContactDataProvider.class)
-    public void addNewContactNegativeTest_EmptyFieldWithDP(Contact contact) {
+    @Test(dataProvider = "dataProviderFromFile_Wrong_EmptyField", dataProviderClass = ContactDataProvider.class)
+    public void addNewContactNegativeTest_EmptyFieldWithDP(Contact contact){
         addPage.typeContactForm(contact);
-        Assert.assertTrue(addPage.isButtonSaveDisabled());
+        Assert.assertTrue(addPage.isBtnSaveDisabled());
+
     }
+
+    @Test(groups = "negative", dataProvider = "dataProviderFromFile_invalidEmail", dataProviderClass = ContactDataProvider.class)
+    public void addNewContactNegativeTest_InvalidEmailWithDP(Contact contact){
+        addPage.typeContactForm(contact);
+        Assert.assertTrue(addPage.closeAlertReturnText().contains("Email not valid:"));
+    }
+
 }

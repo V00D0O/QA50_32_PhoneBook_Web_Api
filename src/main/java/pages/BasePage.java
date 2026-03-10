@@ -1,5 +1,6 @@
 package pages;
 
+import lombok.Setter;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -11,13 +12,11 @@ import utils.HeaderMenuItem;
 import java.time.Duration;
 
 public abstract class BasePage {
+    @Setter
     static WebDriver driver;
 
-    public static void setDriver(WebDriver wd) {
-        driver = wd;
-    }
-
-    public void pause(int time) {
+    public void pause(int time)
+    {
         try {
             Thread.sleep(time * 1000L);
         } catch (InterruptedException e) {
@@ -25,42 +24,48 @@ public abstract class BasePage {
         }
     }
 
-    public boolean isTextInElementPresent(WebElement element, String text) {
+    public boolean isElementDisplayed(WebElement element)
+    {
+        return element.isDisplayed();
+    }
+
+    public boolean isTextInElementPresent(WebElement element, String text){
         return element.getText().contains(text);
     }
 
-    public static <T extends BasePage> T clickButtonHeader(HeaderMenuItem item) {
+    public static <T extends BasePage> T clickButtonHeader(HeaderMenuItem item){
         WebElement element = new WebDriverWait(driver, Duration.ofSeconds(10))
                 .until(ExpectedConditions.elementToBeClickable(By.xpath(item.getLocator())));
         element.click();
-        switch (item) {
+        switch (item){
             case HOME -> {
-                return  (T) new HomePage(driver);
+                return (T)new HomePage(driver);
             }
             case ABOUT -> {
-                return  (T) new AboutPage(driver);
+                return (T)new AboutPage(driver);
             }
             case CONTACTS -> {
-                return (T) new ContactPage(driver);
+                return (T)new ContactPage(driver);
             }
             case ADD -> {
-                return (T) new AddPage(driver);
+                return  (T)new AddPage(driver);
             }
             case LOGIN -> {
-                return  (T) new LoginPage(driver);
+                return (T)new LoginPage(driver);
             }
             case SIGN_OUT -> {
-                return  (T) new HomePage(driver);
+                return (T)new HomePage(driver);
             }
-            default -> throw new IllegalArgumentException("Invalid headerMenuItem");
+            default -> throw new IllegalArgumentException("Invalid headerMeniItem");
+
         }
     }
 
     public String closeAlertReturnText(){
-        Alert alert = new WebDriverWait(driver, Duration.ofSeconds(10))
-                .until(ExpectedConditions.alertIsPresent());
+        Alert alert = new WebDriverWait(driver, Duration.ofSeconds(10)).until(ExpectedConditions.alertIsPresent());
         String text = alert.getText();
         alert.accept();
         return text;
     }
+
 }

@@ -15,7 +15,7 @@ import static utils.UserFactory.*;
 public class RegistrationTests extends AppManager {
     LoginPage loginPage;
 
-    @BeforeMethod
+    @BeforeMethod(alwaysRun = true)
     public void goToRegistrationPage(){
         new HomePage(getDriver()).clickBtnLogin();
         loginPage = new LoginPage(getDriver());
@@ -32,7 +32,7 @@ public class RegistrationTests extends AppManager {
                 .isTextInContactPageMessagePresent("No Contacts here!"));
     }
 
-    @Test
+    @Test(groups = {"smoke", "user"})
     public void registrationPositiveTest_WithFaker(){
         User user = positiveUser();
         System.out.println(user);
@@ -41,7 +41,7 @@ public class RegistrationTests extends AppManager {
         Assert.assertTrue(new ContactPage(getDriver())
                 .isTextInContactPageMessagePresent("No Contacts here!"));
     }
-    @Test
+    @Test(groups = "negative")
     public void registrationNegativeTestNoPass() {
         int i = new Random().nextInt(1000);
         User user = new User("muyitr" + i + "@gmail.com"

@@ -7,20 +7,34 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.pagefactory.AjaxElementLocatorFactory;
 import utils.PropertiesReader;
 
-public class HomePage extends BasePage {
-    public HomePage(WebDriver driver) {
+public class HomePage extends BasePage{
+    public HomePage(WebDriver driver)
+    {
         setDriver(driver);
-        //driver.get("https://telranedu.web.app/home");
+        // driver.get("https://telranedu.web.app/home");
         driver.get(PropertiesReader.getProperty("base.properties", "baseUrl"));
+        PageFactory.initElements(new AjaxElementLocatorFactory(driver, 10), this);
 
-        PageFactory.initElements(new AjaxElementLocatorFactory
-                (driver, 10), this);
     }
-
     @FindBy(xpath = "//a[text()='LOGIN']")
     WebElement btnLogin;
+    @FindBy(xpath = "//a[text()='ADD']")
+    WebElement btnAdd;
+    @FindBy(xpath = "//a[text()='CONTACTS']")
+    WebElement btnContacts;
 
-    public void clickBtnLogin(){
+    public void clickBtnLogin()
+    {
         btnLogin.click();
+    }
+
+    public boolean isAddInDisplayed()
+    {
+        return isElementDisplayed(btnAdd);
+    }
+
+    public boolean isContactsInDisplayed()
+    {
+        return isElementDisplayed(btnContacts);
     }
 }

@@ -32,7 +32,7 @@ public class LoginTests extends AppManager {
    }
 
 
-    @Test
+    @Test(groups = {"smoke", "user"} )
     public void loginPositiveTestWithUser(){
         User user = new User(getProperty("base.properties", "login"),
                 getProperty("base.properties", "password"));
@@ -46,7 +46,7 @@ public class LoginTests extends AppManager {
     }
 
 
-    @Test
+    @Test(groups = "negative")
     public void loginNegativeTest_WrongEmail(){
        User user = new User("marat11@mail.co", "Marat116!");
         HomePage homePage = new HomePage(getDriver());

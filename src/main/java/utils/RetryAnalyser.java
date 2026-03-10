@@ -4,12 +4,13 @@ import org.testng.IRetryAnalyzer;
 import org.testng.ITestResult;
 
 public class RetryAnalyser implements IRetryAnalyzer {
+
     private int retryCount = 0;
     private static int maxTryValue = 3;
 
     @Override
     public boolean retry(ITestResult result) {
-        if(retryCount < maxTryValue){
+        if(retryCount < maxTryValue) {
             retryCount++;
             return true;
         }
