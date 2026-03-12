@@ -30,9 +30,8 @@ public class AddNewContactTests extends AppManager {
         loginPage.clickBtnLoginForm();
         contactPage = new ContactPage(getDriver());
         countOfContacts = contactPage.getCountOfContacts();
-        // addPage = clickButtonHeader(HeaderMenuItem.ADD);
+        addPage = clickButtonHeader(HeaderMenuItem.ADD);
     }
-
 
     @Test(dataProvider = "dataProviderFromFile", dataProviderClass = ContactDataProvider.class)
     public void addNewContactPositiveTest(Contact contact){
@@ -83,6 +82,9 @@ public class AddNewContactTests extends AppManager {
     public void addNewContactNegativeTest_EmptyFieldWithDP(Contact contact){
         addPage.typeContactForm(contact);
         Assert.assertTrue(addPage.isBtnSaveDisabled());
+
+
+
 
     }
 

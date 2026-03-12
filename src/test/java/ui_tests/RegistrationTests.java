@@ -16,46 +16,48 @@ public class RegistrationTests extends AppManager {
     LoginPage loginPage;
 
     @BeforeMethod(alwaysRun = true)
-    public void goToRegistrationPage(){
+    public void goToRegistrationPage() {
         new HomePage(getDriver()).clickBtnLogin();
         loginPage = new LoginPage(getDriver());
     }
 
     @Test
-    public void registrationPositiveTest(){
+    public void registrationPositiveTest() {
         int i = new Random().nextInt(1000);
-        User user = new User("muyitr"+i+"@gmail.com"
-                , "Password124!");
+        User user = new User("Marat1990" + i + "@mail.com", "Marat1990!");
         loginPage.typeLoginRegistrationFormWithUser(user);
         loginPage.clickBtnRegistrationForm();
-        Assert.assertTrue(new ContactPage(getDriver())
-                .isTextInContactPageMessagePresent("No Contacts here!"));
+        Assert.assertTrue(new ContactPage(getDriver()).isTextInContactPageMessagePresent("No Contacts here!"));
     }
 
     @Test(groups = {"smoke", "user"})
-    public void registrationPositiveTest_WithFaker(){
+    public void registrationPositiveTest_WithFaker() {
         User user = positiveUser();
         System.out.println(user);
         loginPage.typeLoginRegistrationFormWithUser(user);
         loginPage.clickBtnRegistrationForm();
-        Assert.assertTrue(new ContactPage(getDriver())
-                .isTextInContactPageMessagePresent("No Contacts here!"));
+        Assert.assertTrue(new ContactPage(getDriver()).isTextInContactPageMessagePresent("No Contacts here!"));
     }
-    @Test(groups = "negative")
-    public void registrationNegativeTestNoPass() {
-        int i = new Random().nextInt(1000);
-        User user = new User("muyitr" + i + "@gmail.com"
-                , "");
+
+    @Test
+    public void registrationNegativeTest_WrongPassword() {
+        User user = new User("Marat1990@mail.com", " ");
+        HomePage homePage = new HomePage(getDriver());
+        homePage.clickBtnLogin();
+        LoginPage loginPage = new LoginPage(getDriver());
         loginPage.typeLoginRegistrationFormWithUser(user);
         loginPage.clickBtnRegistrationForm();
-        System.out.println("Registration failed with code 400");
+        Assert.assertTrue(loginPage.closeAlertReturnText().contains("Wrong email or password format"));
     }
-    @Test
-    public void registrationNegativeTest_WithFaker(){
+
+    @Test(groups = "negative")
+    public void registrationNegativeTest_WithFaker_EmptyPassword() {
         User user = positiveUser();
         user.setPassword("");
         loginPage.typeLoginRegistrationFormWithUser(user);
         loginPage.clickBtnRegistrationForm();
-    Assert.assertTrue(loginPage.closeAlertReturnText().contains("Wrong email or password format"));
+        Assert.assertTrue(loginPage.closeAlertReturnText().contains("Wrong email or password format"));
+
+
     }
 }
